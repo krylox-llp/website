@@ -108,13 +108,7 @@ export default function Home() {
       <main>
         {/* HERO */}
         <section className="relative min-h-screen flex items-center pt-16 overflow-hidden bg-white">
-          <div
-            className="absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage: `radial-gradient(circle, #d1d5db 1px, transparent 1px)`,
-              backgroundSize: "28px 28px",
-            }}
-          />
+          <div className="dot-grid absolute inset-0 opacity-[0.35]" />
           <div className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full bg-red-600/5 blur-3xl pointer-events-none" />
           <div className="absolute bottom-0 -left-40 w-[500px] h-[500px] rounded-full bg-red-600/[0.04] blur-3xl pointer-events-none" />
 
@@ -194,7 +188,7 @@ export default function Home() {
                             </div>
                           </div>
                           <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                            <div className={`h-1.5 ${color} rounded-full`} style={{ width: barWidth }} />
+                            <div className={`bar-width h-1.5 ${color} rounded-full`} style={{ ["--bar-width" as string]: barWidth }} />
                           </div>
                         </div>
                       ))}

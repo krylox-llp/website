@@ -14,7 +14,7 @@ export default function Footer() {
             <a href="/#process" className="hover:text-white transition-colors">Process</a>
             <a href="/blog" className="hover:text-white transition-colors">Blog</a>
             <a href="/#contact" className="hover:text-white transition-colors">Contact</a>
-            <a href="mailto:hello@krylox.ai" className="hover:text-white transition-colors">hello@krylox.ai</a>
+            <a href="mailto:hello@krylox.ai" className="hover:text-white transition-colors">hello&#64;krylox&#46;ai</a>
           </div>
 
           <div className="flex items-center gap-4">
