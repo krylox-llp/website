@@ -95,7 +95,7 @@ const PROCESS = [
 
 const TECH = [
   "PyTorch", "TensorFlow", "TensorRT", "ONNX", "Triton Inference Server",
-  "KServe", "Kubernetes", "Docker", "MLflow", "Airflow",
+  "KServe", "Kubernetes", "Docker", "MLflow", "Kubeflow",
   "OpenTelemetry", "Ray Serve", "FastAPI", "Grafana",
 ];
 

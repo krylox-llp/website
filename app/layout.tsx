@@ -191,13 +191,13 @@ export const metadata: Metadata = {
     siteName: "Krylox",
     title: "Krylox | MLOps & AI Inference Optimization Services",
     description:
-      "Enterprise MLOps and AI inference optimization. 10x faster models. 60% lower GPU costs. Serving EMEA, UAE, and India.",
+      "Enterprise MLOps and AI inference optimization. Up to 10x faster models. Up to 60% lower GPU costs. Serving EMEA, UAE, and India.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Krylox | MLOps & AI Inference Optimization Services",
     description:
-      "Enterprise MLOps and AI inference optimization. 10x faster models. 60% lower GPU costs.",
+      "Enterprise MLOps and AI inference optimization. Up to 10x faster models. Up to 60% lower GPU costs.",
   },
   icons: {
     icon: "/favicon.png",
