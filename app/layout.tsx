@@ -147,7 +147,7 @@ export const metadata: Metadata = {
     template: "%s | Krylox",
   },
   description:
-    "Krylox delivers enterprise MLOps and AI inference optimization. We make production AI models 10x faster and 60% cheaper. Serving EMEA, UAE, and India.",
+    "Krylox delivers enterprise MLOps and AI inference optimization. We make production AI models up to 10x faster and up to 60% cheaper. Serving EMEA, UAE, and India.",
   keywords: [
     "MLOps consulting",
     "AI inference optimization",

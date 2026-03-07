@@ -1,0 +1,28 @@
+# Krylox
+
+> MLOps & AI Inference Optimization Consulting. We make production AI models up to 10x faster and up to 60% cheaper.
+
+Krylox is an engineering-led consultancy specializing in MLOps and AI inference optimization. We embed with client teams, write the code, and own the outcome — from audit to production in weeks.
+
+## Services
+
+- **Extreme Inference Optimization**: Latency and cost reduction using quantization, TensorRT, ONNX, and Triton Inference Server
+- **End-to-End MLOps Pipelines**: CI/CD for ML, feature stores, retraining loops, canary deployments, and observability
+- **Data Drift & Silent Failure Protection**: Live statistical monitoring, prediction logging, and automated redeployment pipelines
+- **Reproducibility Debt Elimination**: Immutable containers, exact dependency pinning, and IaC to eliminate deployment inconsistencies
+
+## Coverage
+
+Serving clients across EMEA, UAE, and India.
+
+## Contact
+
+- Website: https://krylox.ai
+- Email: hello@krylox.ai
+- LinkedIn: https://www.linkedin.com/company/krylox-hq
+- GitHub: https://github.com/krylox-llp
+
+## Blog
+
+- https://krylox.ai/blog/llm-cold-start-optimization
+- https://krylox.ai/blog/why-llm-inference-infra-is-hard
