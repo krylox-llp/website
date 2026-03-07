@@ -1,0 +1,181 @@
+---
+title: "Why Building LLM Inference Infrastructure Is Harder Than It Looks"
+date: "2026-03-07"
+description: "Everyone assumes LLM deployment is just spinning up a GPU and pointing a model at it. The teams who have tried know better. Here is what actually makes it hard, and what to do about it."
+readTime: "6 min read"
+tags: ["LLM Serving", "Inference Infrastructure", "MLOps", "Observability"]
+---
+
+The first prototype is always easy. You spin up a GPU instance, load the model, wrap it in FastAPI, and it works. Latency looks fine. Cost seems manageable. You ship it.
+
+Then traffic grows. You start seeing dropped requests. GPU costs balloon. Something is slow but you are not sure what. A model update breaks your deployment because of a dependency conflict. Your on-call engineer gets paged at 2am and cannot tell if the problem is the model, the server, or the application layer.
+
+This is the gap between getting an LLM to respond and actually running it in production. Here are the three areas where teams consistently underestimate the complexity.
+
+---
+
+## 1. Scaling on Demand
+
+LLM serving does not scale like a web application. You cannot just spin up more pods. You need GPUs, and GPUs are slow, expensive, and constrained in ways that CPU-based services are not.
+
+### The provisioning dilemma
+
+If you pre-allocate fixed GPU capacity, you face a binary problem: over-provision and pay for idle hardware, or under-provision and drop requests during spikes. Neither is acceptable for production workloads.
+
+Scale-to-zero sounds like the answer, but introduces cold start delays that can stretch into minutes when you factor in GPU provisioning, image pulling, and model loading (covered in detail in [our cold start post](/blog/llm-cold-start-optimization)).
+
+The practical solution is a hybrid approach: maintain a small warm baseline capacity to handle steady-state traffic, and scale out on top of that for bursts. How large that baseline should be depends on your traffic patterns and latency requirements. There is no universal answer.
+
+### Utilization metrics will mislead you
+
+GPU utilization is the obvious metric to scale on, and it is almost always the wrong one.
+
+A GPU can show 90% utilization while serving requests slowly because the bottleneck is actually the CPU preprocessing pipeline, or the KV cache, or the tokenizer. Conversely, a GPU can show 40% utilization during a traffic spike if requests are queuing at the network layer before they ever reach the GPU.
+
+**Scale on active request count and queue depth, not on utilization.**
+
+```yaml
+# Kubernetes HPA targeting request queue depth
+# rather than CPU/GPU utilization
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: llm-inference
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: llm-server
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: External
+      external:
+        metric:
+          name: inference_queue_depth
+        target:
+          type: AverageValue
+          averageValue: "5"  # scale when avg queue > 5 requests
+```
+
+This gives you a much more accurate signal. Queue depth rises before utilization does, giving the autoscaler time to act before requests start degrading.
+
+---
+
+## 2. Build and Maintenance Cost
+
+The model itself is rarely what makes this expensive to build and maintain. It is everything around it.
+
+### LLMs do not add value in isolation
+
+Raw LLM output is almost never what users see. Every production use case involves a pipeline: input validation, context retrieval (RAG), prompt construction, output parsing, safety filtering, response formatting. That pipeline can easily be more complex than the model serving layer itself.
+
+Most inference frameworks are designed to serve a model. They are not designed to run a business logic pipeline. That means you are stitching together your serving layer with custom preprocessing and postprocessing code, and maintaining that integration yourself every time either side changes.
+
+```python
+# What a "simple" production pipeline actually looks like
+async def handle_request(user_input: str, user_id: str) -> str:
+    # 1. Input validation and sanitization
+    validated = await validate_input(user_input)
+
+    # 2. Retrieve relevant context (RAG)
+    context = await vector_store.similarity_search(validated, k=5)
+
+    # 3. Build prompt with context + history
+    messages = await build_prompt(validated, context, user_id)
+
+    # 4. Call inference server
+    raw_output = await inference_client.generate(messages)
+
+    # 5. Parse structured output
+    parsed = parse_output(raw_output)
+
+    # 6. Safety / quality filter
+    if not await safety_check(parsed):
+        return fallback_response()
+
+    # 7. Log for evaluation
+    await log_interaction(user_input, parsed, user_id)
+
+    return parsed
+```
+
+Every one of those steps is a failure point, a latency contribution, and a maintenance surface.
+
+### You need engineers who understand both worlds
+
+LLM inference sits at the intersection of ML and distributed systems. Someone who understands transformers but not Kubernetes will struggle with the infrastructure side. Someone who understands Kubernetes but not how KV caching or tensor parallelism works will make poor decisions about the serving configuration.
+
+This is a genuinely rare skill combination. It is also why teams often end up with serving infrastructure that is either technically correct but wasteful, or efficient on paper but brittle in practice.
+
+### Dependency hell is real
+
+Many inference frameworks (vLLM, TensorRT-LLM, DeepSpeed-MII) have tightly version-locked dependencies. PyTorch version, CUDA version, driver version, and framework version all need to align. When you want to upgrade a model or try a new quantization approach, you can easily find yourself in a situation where the new model requires a newer framework version that conflicts with something else in your stack.
+
+Containerization helps, but it does not eliminate the problem. It moves it to image build time instead of runtime. Maintaining multiple inference container images for different model families with different dependency requirements becomes a workflow problem of its own.
+
+---
+
+## 3. You Cannot Skip Observability
+
+The hardest production incidents to debug are the ones where everything looks fine until you dig into the right layer. LLM inference has three distinct layers that need monitoring, and they surface different classes of problems.
+
+### GPU metrics
+
+The hardware layer. GPU utilization, memory utilization, memory bandwidth, PCIe transfer rates, and temperature.
+
+GPU memory is the most critical. LLM inference is extremely memory-bound. Running too close to the memory limit causes the server to start evicting KV cache entries, which degrades throughput non-linearly. You want to know this is happening before users feel it.
+
+```python
+# Key GPU metrics to track (via DCGM or nvidia-smi exporter)
+# - DCGM_FI_DEV_GPU_UTIL          → GPU compute utilization
+# - DCGM_FI_DEV_FB_USED           → Framebuffer (VRAM) used
+# - DCGM_FI_DEV_MEM_COPY_UTIL     → Memory bandwidth utilization
+# - DCGM_FI_DEV_NVLINK_BANDWIDTH  → NVLink bandwidth (for multi-GPU)
+```
+
+### LLM-specific metrics
+
+The model serving layer. This is where most teams have gaps.
+
+Standard infrastructure monitoring has no concept of tokens, prefill, or KV cache. You need metrics that are specific to how LLMs work:
+
+- **Time to first token (TTFT)**: How long before the user sees any output. Directly impacts perceived responsiveness.
+- **Tokens per second (TPS)**: Generation throughput. Affects how long multi-turn conversations feel.
+- **KV cache hit rate**: High hit rates mean you are efficiently reusing computation. Low hit rates mean you are doing redundant prefill work.
+- **Queue wait time**: How long requests wait before the model starts processing them. A rising queue is your early warning signal.
+
+```python
+# Instrument your inference server to emit these
+from prometheus_client import Histogram, Gauge
+
+ttft_histogram = Histogram(
+    "llm_time_to_first_token_seconds",
+    "Time from request receipt to first token generated",
+    buckets=[0.1, 0.25, 0.5, 1.0, 2.5, 5.0, 10.0],
+)
+
+kv_cache_utilization = Gauge(
+    "llm_kv_cache_utilization_ratio",
+    "Fraction of KV cache currently in use",
+)
+
+queue_depth = Gauge(
+    "llm_request_queue_depth",
+    "Number of requests waiting for inference",
+)
+```
+
+### Application performance metrics
+
+The business layer. Requests per second, error rates, end-to-end latency (including your pre/postprocessing pipeline), and downstream impact.
+
+This is where you connect infrastructure health to user experience. A drop in RPS combined with a spike in queue depth tells you you have a capacity problem. A drop in RPS with no change in queue depth and a spike in error rate tells you something upstream broke. These two scenarios look identical in your application logs without the lower-level metrics to differentiate them.
+
+---
+
+## The Common Thread
+
+All three of these challenges share the same root: LLM inference is a new class of infrastructure problem. The playbooks from web services and even from traditional ML serving do not map cleanly onto it. The teams that handle it well treat it as a first-class engineering problem, not an afterthought once the model is good enough.
+
+If your serving layer is held together with duct tape right now, you are not alone. But the longer you wait to address the fundamentals, the more expensive the cleanup becomes.

@@ -1,0 +1,142 @@
+---
+title: "Your LLM Cold Start is Slower Than NASA's Rocket Ignition Sequence"
+date: "2026-03-07"
+description: "Cold starts in serverless LLM deployments can stall requests for seconds or even minutes. Here is a breakdown of practical strategies at every layer, from container image download to GPU initialization, to get that time down."
+readTime: "7 min read"
+tags: ["LLM Serving", "Cold Start", "Serverless", "MLOps"]
+---
+
+A rocket ignition sequence takes about 6 seconds. Impressive engineering. Completely acceptable for a launch.
+
+Your API cold start taking the same amount of time? That is a disaster.
+
+Cold starts in serverless LLM deployments are one of the most underestimated problems in production AI. The first request to a scaled-down deployment stalls while the system pulls an image, loads a multi-gigabyte model, and initializes the GPU, leaving your user waiting long enough to notice.
+
+Here is a breakdown of the problem at each layer, and the tools that actually help.
+
+## Why Cold Starts Hit LLMs Especially Hard
+
+Standard serverless cold starts are measured in milliseconds to low seconds. LLM cold starts are different in scale:
+
+- A container image for a GPU-based inference server can be **10–30GB**
+- A 7B parameter model in FP16 weighs **~14GB**
+- CUDA initialization and model warmup add another **10–60 seconds** depending on hardware
+
+Stack those up and you can easily hit **2–5 minutes** from scale-zero to first token. That is not a cold start. That is a full reboot.
+
+There are three distinct phases where time gets lost, and each needs its own fix.
+
+---
+
+## Phase 1: Container Image Download
+
+The first bottleneck is pulling the container image itself. GPU inference images are large, and traditional container registries were not designed for this.
+
+### Use Cloud Object Storage Instead of a Registry
+
+GCS and S3 offer significantly higher throughput than standard container registries, and they support parallel chunk downloads. For large GPU images, the difference is meaningful.
+
+The pattern here is to store your image layers in object storage and use a snapshotter that can pull from there directly. This is especially effective when your compute is already in the same cloud region, giving you essentially local network speeds.
+
+### Lazy Pulling with Stargz-Snapshotter
+
+The conventional approach pulls the entire image before starting the container. Lazy pulling flips this: the container starts running while the image is still being downloaded in the background, fetching chunks on demand as they are accessed.
+
+[Stargz-Snapshotter](https://github.com/containerd/stargz-snapshotter) implements this for containerd. Your image needs to be in the eStargz format, but the conversion is straightforward and the startup time reduction is significant. In practice, containers can start in seconds even for images that would otherwise take minutes to pull.
+
+```bash
+# Convert an existing image to eStargz format
+ctr-remote image optimize --oci IMAGE_REF OUTPUT_REF
+```
+
+### Container Checkpoints
+
+Rather than starting from an image every time, you can snapshot a running container (including its memory state) and restore from that snapshot on the next cold start. CRIU (Checkpoint/Restore In Userspace) makes this possible.
+
+This is particularly powerful because you can checkpoint a container that has already completed initialization: CUDA context loaded, model in memory, server warmed up. The next cold start skips all of that and restores directly to a ready state.
+
+---
+
+## Phase 2: Model Loading
+
+Even once the container is running, loading the model takes time. A naive implementation copies the model from disk to CPU RAM and then transfers it to GPU memory. That is two full copies of a multi-gigabyte file.
+
+### Use the Right Model Format
+
+The format your model is stored in has a direct impact on load time.
+
+**Safetensors** (developed by Hugging Face) is designed for fast, safe loading. Unlike pickle-based PyTorch checkpoints, safetensors supports memory-mapped loading and does not execute arbitrary code during deserialization. For large models, the load time improvement over `.bin` files is noticeable.
+
+```python
+from safetensors.torch import load_file
+
+# Direct memory-mapped load, no intermediate copy
+state_dict = load_file("model.safetensors", device="cuda")
+```
+
+**GGUF** (the format used by llama.cpp and its ecosystem) is optimized for efficient loading and supports quantized weights natively. If you are running quantized models for inference, GGUF eliminates a lot of the overhead from format conversion at load time.
+
+### Stream Directly to GPU Memory
+
+The standard model loading path goes: storage → CPU RAM → GPU VRAM. That CPU RAM step is wasteful: you are moving gigabytes of data twice.
+
+[Run:ai's Model Streamer](https://github.com/run-ai/runai-model-streamer) eliminates the intermediate copy by streaming model weights directly from object storage to GPU memory. It also parallelizes the transfer, saturating available bandwidth rather than loading sequentially.
+
+For a 13B model on an A100, this can cut model loading time by 40–60% compared to the standard path.
+
+```python
+from runai_model_streamer import SafetensorsStreamer
+
+streamer = SafetensorsStreamer()
+with streamer.get_tensors("s3://your-bucket/model.safetensors") as tensors:
+    # Tensors land directly in GPU memory
+    model.load_state_dict(tensors)
+```
+
+---
+
+## Phase 3: GPU Initialization
+
+CUDA initialization is expensive. The first time a GPU context is created, drivers are loaded, kernels are compiled, and the device is configured. For complex models with custom CUDA kernels (common in optimized inference servers), this can add tens of seconds.
+
+### CUDA Checkpointing with CRIU
+
+CRIU's CUDA checkpoint support extends the container checkpoint idea specifically to GPU state. You can snapshot a process that has a fully initialized CUDA context (GPU memory included) and restore it later without going through initialization again.
+
+[CUDA Checkpoint](https://github.com/NVIDIA/cuda-checkpoint) from NVIDIA integrates with this workflow, allowing you to checkpoint and restore GPU processes. Combined with CRIU for the CPU side, you can effectively snapshot an entire inference server in a ready state and restore it in seconds.
+
+```bash
+# Checkpoint a running process (including GPU state)
+cuda-checkpoint --toggle --pid <inference_server_pid>
+
+# Restore later
+criu restore -d --images-dir /checkpoint/path
+```
+
+This is still a relatively new approach in production ML infrastructure, but for latency-critical deployments it is worth evaluating seriously.
+
+---
+
+## Putting It Together
+
+No single technique eliminates cold start by itself. The real gains come from stacking them:
+
+| Layer | Technique | Typical Improvement |
+|-------|-----------|-------------------|
+| Image pull | Stargz lazy pulling | 60–80% reduction in pull time |
+| Image pull | Object storage (GCS/S3) | 2–4x faster pull throughput |
+| Model load | Safetensors + direct GPU stream | 40–60% faster load |
+| GPU init | CUDA checkpoint + CRIU | Near-instant restore |
+
+For most teams, the highest-leverage starting point is **lazy pulling** (big impact, low integration cost) and **switching to safetensors** (almost no cost if you are already on Hugging Face). The checkpoint approaches require more infrastructure investment but unlock the best possible cold start times.
+
+---
+
+## Tools Referenced
+
+- [Stargz-Snapshotter](https://github.com/containerd/stargz-snapshotter): lazy image pulling for containerd
+- [Run:ai Model Streamer](https://github.com/run-ai/runai-model-streamer): direct GPU memory streaming
+- [CUDA Checkpoint](https://github.com/NVIDIA/cuda-checkpoint): GPU process checkpointing
+- [CRIU](https://criu.org): checkpoint/restore for Linux processes
+
+Cold start will never be zero. But with the right stack, it can stop being the thing that defines your API's first impression.
