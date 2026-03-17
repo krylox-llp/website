@@ -97,6 +97,7 @@ const TECH = [
   "PyTorch", "TensorFlow", "TensorRT", "ONNX", "Triton Inference Server",
   "KServe", "Kubernetes", "Docker", "MLflow", "Kubeflow",
   "OpenTelemetry", "Ray Serve", "FastAPI", "Grafana",
+  "Google Kubernetes Engine", "Vertex AI", "Cloud Run", "Google Cloud Storage",
 ];
 
 export default function Home() {
@@ -120,7 +121,7 @@ export default function Home() {
                 <div className="flex items-center gap-3 mb-6">
                   <span className="h-px w-8 bg-red-600" />
                   <span className="text-sm font-semibold text-red-600 uppercase tracking-widest">
-                    MLOps & AI Inference Consulting
+                    MLOps & AI Infrastructure
                   </span>
                 </div>
                 <h1 className="text-5xl md:text-6xl font-extrabold text-black leading-[1.05] tracking-tight">
@@ -220,9 +221,9 @@ export default function Home() {
           <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0 md:divide-x md:divide-white/10">
               {[
-                { stat: "10x", label: "Faster Model Inference (Target)" },
-                { stat: "60%", label: "Cost Reduction (Target)" },
-                { stat: "100%", label: "Reproducible Deployments (Goal)" },
+                { stat: "10x", label: "Faster Model Inference" },
+                { stat: "60%", label: "Cost Reduction" },
+                { stat: "100%", label: "Reproducible Deployments" },
               ].map(({ stat, label }) => (
                 <div
                   key={label}

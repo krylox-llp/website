@@ -19,7 +19,7 @@ Serving clients across EMEA, UAE, and India.
 
 - Website: https://krylox.ai
 - Email: hello@krylox.ai
-- LinkedIn: https://www.linkedin.com/company/krylox-hq
+- LinkedIn: https://www.linkedin.com/company/krylox
 - GitHub: https://github.com/krylox-llp
 
 ## Blog

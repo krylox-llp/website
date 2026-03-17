@@ -47,7 +47,7 @@ const STRUCTURED_DATA = {
         "Machine Learning Operations",
         "Model Deployment",
         "Data Drift Detection",
-        "AI Consulting",
+        "AI Infrastructure",
       ],
     },
     {
@@ -91,7 +91,7 @@ const STRUCTURED_DATA = {
       url: BASE_URL,
       image: `${BASE_URL}/logo.png`,
       description:
-        "End-to-end MLOps and AI inference optimization consulting. We cut inference latency by 10x and reduce GPU costs by 60% for production AI systems.",
+        "End-to-end MLOps and AI inference optimization. We cut inference latency by 10x and reduce GPU costs by 60% for production AI systems.",
       priceRange: "$$$",
       email: "hello@krylox.ai",
       areaServed: ["EMEA", "UAE", "India"],
@@ -150,7 +150,7 @@ export const metadata: Metadata = {
   description:
     "Krylox delivers enterprise MLOps and AI inference optimization. We make production AI models up to 10x faster and up to 60% cheaper. Serving EMEA, UAE, and India.",
   keywords: [
-    "MLOps consulting",
+    "MLOps services",
     "AI inference optimization",
     "TensorRT optimization",
     "ONNX optimization",
@@ -164,7 +164,7 @@ export const metadata: Metadata = {
     "production AI",
     "GPU cost optimization",
     "model serving",
-    "AI consulting EMEA",
+    "AI infrastructure EMEA",
     "MLOps India",
     "MLOps UAE",
   ],
