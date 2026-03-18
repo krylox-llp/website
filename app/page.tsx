@@ -95,9 +95,10 @@ const PROCESS = [
 
 const TECH = [
   "PyTorch", "TensorFlow", "TensorRT", "ONNX", "Triton Inference Server",
-  "KServe", "Kubernetes", "Docker", "MLflow", "Kubeflow",
+  "KServe", "Kubernetes", "MLflow", "Kubeflow",
   "OpenTelemetry", "Ray Serve", "FastAPI", "Grafana",
-  "Google Kubernetes Engine", "Vertex AI", "Cloud Run", "Google Cloud Storage",
+  "Google Kubernetes Engine", "Vertex AI", "Cloud Run",
+  "SGLang", "NVIDIA DCGM",
 ];
 
 export default function Home() {
@@ -121,7 +122,7 @@ export default function Home() {
                 <div className="flex items-center gap-3 mb-6">
                   <span className="h-px w-8 bg-red-600" />
                   <span className="text-sm font-semibold text-red-600 uppercase tracking-widest">
-                    MLOps & AI Infrastructure
+                    AI Infrastructure Platform
                   </span>
                 </div>
                 <h1 className="text-5xl md:text-6xl font-extrabold text-black leading-[1.05] tracking-tight">
@@ -130,8 +131,8 @@ export default function Home() {
                   <span className="text-red-600">Faster</span> & Cheaper.
                 </h1>
                 <p className="mt-6 text-lg text-gray-500 leading-relaxed max-w-lg">
-                  Battle-tested, end-to-end MLOps services and extreme inference optimization.
-                  We specialize in making production AI models fast, cheap, and reliable at any scale.
+                  We build battle-tested AI infrastructure and extreme inference optimization systems.
+                  Production AI models that are fast, cheap, and reliable at any scale.
                 </p>
                 <div className="mt-10 flex flex-col sm:flex-row gap-4">
                   <a
@@ -144,7 +145,7 @@ export default function Home() {
                     href="#services"
                     className="rounded-md border border-gray-300 bg-white px-8 py-3.5 text-sm font-semibold text-black hover:border-black transition-colors text-center"
                   >
-                    Explore Services
+                    See Our Solutions
                   </a>
                 </div>
                 <div className="mt-12 flex flex-wrap gap-x-8 gap-y-3 text-sm text-gray-400">
@@ -245,7 +246,7 @@ export default function Home() {
                 What We Do
               </span>
               <h2 className="mt-3 text-4xl font-extrabold text-black tracking-tight">
-                End-to-end AI engineering services
+                End-to-end AI engineering
               </h2>
               <p className="mt-4 text-gray-500 text-lg leading-relaxed">
                 From prototype to production-grade systems, we cover the full spectrum.
