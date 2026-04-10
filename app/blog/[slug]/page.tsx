@@ -113,7 +113,7 @@ export default function PostPage({ params }: Props) {
               Back to Blog
             </Link>
             <a
-              href="mailto:hello@krylox.ai?subject=Free Audit Request"
+              href="https://calendar.app.google/18Sxyox2jD5kK9YQA"
               className="rounded-md bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-600 transition-colors"
             >
               Work with us

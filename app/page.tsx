@@ -424,7 +424,7 @@ export default function Home() {
             </p>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="mailto:hello@krylox.ai?subject=Free Audit Request"
+                href="https://calendar.app.google/18Sxyox2jD5kK9YQA"
                 className="rounded-md bg-red-600 px-8 py-3.5 text-sm font-semibold text-white hover:bg-red-500 transition-colors"
               >
                 Schedule a Free Audit

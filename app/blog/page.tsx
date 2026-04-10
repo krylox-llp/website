@@ -109,7 +109,7 @@ export default function BlogPage() {
               We do this for production systems every day. Let us audit yours.
             </p>
             <a
-              href="mailto:hello@krylox.ai?subject=Free Audit Request"
+              href="https://calendar.app.google/18Sxyox2jD5kK9YQA"
               className="mt-8 inline-flex rounded-md bg-red-600 px-8 py-3.5 text-sm font-semibold text-white hover:bg-red-500 transition-colors"
             >
               Schedule a Free Audit
