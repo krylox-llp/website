@@ -67,7 +67,7 @@ const FEATURES = [
   {
     title: "Global Coverage",
     description:
-      "Serving clients across EMEA, UAE, and India with enterprise SLAs and timezone-appropriate support.",
+      "Serving clients across EMEA, UAE, India, and the US with enterprise SLAs and timezone-appropriate support.",
   },
 ];
 
@@ -149,7 +149,7 @@ export default function Home() {
                   </a>
                 </div>
                 <div className="mt-12 flex flex-wrap gap-x-8 gap-y-3 text-sm text-gray-400">
-                  {["EMEA", "UAE", "India"].map((region) => (
+                  {["EMEA", "UAE", "India", "US"].map((region) => (
                     <span key={region} className="flex items-center gap-2">
                       <span className="h-1.5 w-1.5 rounded-full bg-red-600" />
                       {region}
@@ -443,6 +443,8 @@ export default function Home() {
               <span className="text-gray-300">UAE</span>
               &nbsp;&middot;&nbsp;
               <span className="text-gray-300">India</span>
+              &nbsp;&middot;&nbsp;
+              <span className="text-gray-300">US</span>
             </p>
           </div>
         </section>
