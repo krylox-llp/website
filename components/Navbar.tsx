@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 
 const NAV_LINKS = [
   { label: "Services", href: "/#services" },
@@ -16,6 +16,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const [, startTransition] = useTransition();
 
   useEffect(() => {
     if (pathname !== "/") return;
@@ -23,7 +24,7 @@ export default function Navbar() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) setActiveSection(entry.target.id);
+          if (entry.isIntersecting) startTransition(() => setActiveSection(entry.target.id));
         });
       },
       { rootMargin: "-40% 0px -60% 0px" }

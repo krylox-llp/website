@@ -49,12 +49,12 @@
 }
 
 /* ── Scroll reveal ── */
-.reveal {
+.js-loaded .reveal {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.35s ease, transform 0.35s ease;
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
+.js-loaded .reveal.visible { opacity: 1; transform: translateY(0); }
 .reveal.d1 { transition-delay: 0.08s; }
 .reveal.d2 { transition-delay: 0.16s; }
 .reveal.d3 { transition-delay: 0.24s; }
