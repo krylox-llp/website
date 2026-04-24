@@ -130,7 +130,7 @@ export const metadata: Metadata = {
     template: "%s | Krylox",
   },
   description:
-    "Krylox LLP advises on MLOps strategy and inference architecture, and hosts models on our own GPU fleet. Up to 10× faster inference, up to 60% cost reduction. Team from Google, Meta, and Bloomberg. Serving EMEA, UAE, India, and the US.",
+    "Krylox LLP advises on MLOps strategy and inference architecture, and hosts models on our own GPU fleet. Team from Google, Meta, and Bloomberg. Serving EMEA, UAE, India, and the US.",
   keywords: [
     "MLOps engineering firm",
     "AI inference optimization",

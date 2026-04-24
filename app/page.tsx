@@ -22,7 +22,7 @@ const SERVICES = [
   {
     id: "s3", num: "03", title: "Drift Protection",
     tag: "Monitoring",
-    desc: "Performance degradation never reaches your users. Live statistical monitoring, prediction logging, and automated retraining loops.",
+    desc: "Keep your model drift-proof in production. Live statistical monitoring, prediction logging, and automated retraining loops catch degradation before it reaches your users.",
     bullets: ["Real-time data and concept drift detection", "Automated model validation pipelines", "Prediction quality dashboards with alerting", "Zero-human retraining and redeployment"],
   },
   {
