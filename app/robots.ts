@@ -6,9 +6,9 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
+        disallow: "/api/",
       },
     ],
     sitemap: "https://krylox.ai/sitemap.xml",
-    host: "https://krylox.ai",
   };
 }

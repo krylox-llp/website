@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { getAllPosts, getPost, formatDate } from "@/lib/blog";
@@ -60,7 +61,7 @@ export default function PostPage({ params }: Props) {
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="text-xs font-medium text-red-600 bg-red-50 rounded-full px-3 py-1"
+                  className="text-xs font-medium text-red-600 bg-red-50 px-3 py-1"
                 >
                   {tag}
                 </span>
@@ -78,7 +79,7 @@ export default function PostPage({ params }: Props) {
             {/* Meta */}
             <div className="mt-6 flex items-center gap-4 text-sm text-gray-400">
               <span className="flex items-center gap-2">
-                <span className="h-6 w-6 rounded-full bg-black flex items-center justify-center text-white text-xs font-bold">
+                <span className="h-6 w-6 bg-black flex items-center justify-center text-white text-xs font-bold">
                   K
                 </span>
                 Krylox Team
@@ -95,7 +96,7 @@ export default function PostPage({ params }: Props) {
         <section className="bg-white py-16">
           <div className="mx-auto max-w-3xl px-6 lg:px-8">
             <article className="prose prose-gray max-w-none">
-              <MDXRemote source={post.content} />
+              <MDXRemote source={post.content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
             </article>
           </div>
         </section>
@@ -114,7 +115,7 @@ export default function PostPage({ params }: Props) {
             </Link>
             <a
               href="https://calendar.app.google/18Sxyox2jD5kK9YQA"
-              className="rounded-md bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-600 transition-colors"
+              className="bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-600 transition-colors"
             >
               Work with us
             </a>

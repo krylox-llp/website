@@ -54,14 +54,14 @@ export default function BlogPage() {
                   <Link
                     key={post.slug}
                     href={`/blog/${post.slug}`}
-                    className="group bg-white rounded-2xl p-8 border border-gray-200 hover:border-red-200 hover:shadow-lg transition-all duration-300 flex flex-col"
+                    className="group bg-white p-8 border border-gray-200 hover:border-red-200 hover:shadow-lg transition-all duration-300 flex flex-col"
                   >
                     {/* Tags */}
                     <div className="flex flex-wrap gap-2 mb-5">
                       {post.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="text-xs font-medium text-red-600 bg-red-50 rounded-full px-3 py-1"
+                          className="text-xs font-medium text-red-600 bg-red-50 px-3 py-1"
                         >
                           {tag}
                         </span>
@@ -103,16 +103,16 @@ export default function BlogPage() {
         <section className="bg-black py-20">
           <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
             <h2 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-              Want this expertise applied to your stack?
+              Want this applied to your stack?
             </h2>
             <p className="mt-4 text-gray-400 max-w-lg mx-auto">
               We do this for production systems every day. Let us audit yours.
             </p>
             <a
-              href="https://calendar.app.google/18Sxyox2jD5kK9YQA"
-              className="mt-8 inline-flex rounded-md bg-red-600 px-8 py-3.5 text-sm font-semibold text-white hover:bg-red-500 transition-colors"
+              href="https://calendar.app.google/3QEmmNd7hzfVYk6K8"
+              className="mt-8 inline-flex bg-red-600 px-8 py-3.5 text-sm font-semibold text-white hover:bg-red-500 transition-colors"
             >
-              Schedule a Free Audit
+              Schedule a call
             </a>
           </div>
         </section>

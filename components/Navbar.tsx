@@ -7,27 +7,19 @@ import { useState, useEffect } from "react";
 
 const NAV_LINKS = [
   { label: "Services", href: "/#services" },
-  { label: "Why Krylox", href: "/#why-krylox" },
   { label: "Process", href: "/#process" },
+  { label: "GPU Hosting", href: "/#hosting" },
   { label: "Blog", href: "/blog" },
-  { label: "Contact", href: "/#contact" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
     if (pathname !== "/") return;
-    const sections = document.querySelectorAll("section[id]");
+    const sections = document.querySelectorAll("section[id], div[id]");
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -47,49 +39,59 @@ export default function Navbar() {
   };
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-        scrolled ? "bg-white/95 backdrop-blur-md shadow-sm" : "bg-white/80 backdrop-blur-sm"
-      }`}
-    >
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex-shrink-0">
-            <Image src="/logo.png" alt="Krylox" width={120} height={32} className="h-8 w-auto" priority />
+    <header style={{ position: "fixed", inset: "0 0 auto 0", zIndex: 200, background: "rgba(255,255,255,0.98)", backdropFilter: "blur(16px)", borderBottom: "1px solid var(--border)" }}>
+      <div className="rsp-nav-inner">
+        <div style={{ display: "flex", height: "64px", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
+          <Link href="/" className="md:static absolute left-1/2 md:left-auto md:translate-x-0 -translate-x-1/2" style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+            <Image src="/logo.png" alt="Krylox" width={120} height={32} style={{ height: "30px", width: "auto" }} priority />
           </Link>
 
-          <nav aria-label="Main navigation" className="hidden md:flex items-center gap-8">
+          <nav aria-label="Main navigation" style={{ alignItems: "center", gap: "32px" }} className="hidden md:flex">
             {NAV_LINKS.map(({ label, href }) => (
               <Link
                 key={label}
                 href={href}
-                className={`text-sm font-medium transition-colors ${
-                  isActive(href) ? "text-black" : "text-gray-500 hover:text-black"
-                }`}
+                style={{
+                  textDecoration: "none",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: isActive(href) ? "var(--black)" : "#5a5a56",
+                  transition: "color .2s",
+                }}
+                onMouseOver={e => (e.currentTarget.style.color = "var(--black)")}
+                onMouseOut={e => (e.currentTarget.style.color = isActive(href) ? "var(--black)" : "#5a5a56")}
               >
                 {label}
               </Link>
             ))}
           </nav>
 
-          <Link
-            href="/#contact"
-            className="hidden md:inline-flex rounded-md bg-black px-5 py-2 text-sm font-semibold text-white hover:bg-red-600 transition-colors"
+          <a
+            href="https://calendar.app.google/3QEmmNd7hzfVYk6K8"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ background: "var(--red)", color: "white", padding: "8px 20px", fontSize: "13px", fontWeight: 600, textDecoration: "none", fontFamily: "var(--font-ibm-plex-sans)", transition: "background .2s" }}
+            className="hidden md:inline-flex"
+            onMouseOver={e => (e.currentTarget.style.background = "var(--red-hover)")}
+            onMouseOut={e => (e.currentTarget.style.background = "var(--red)")}
           >
             Get Started
-          </Link>
+          </a>
 
           <button
-            className="md:hidden p-2 text-gray-600 hover:text-black"
+            className="md:hidden ml-auto"
+            style={{ padding: "8px", color: "#5a5a56", background: "none", border: "none", cursor: "pointer" }}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
             {mobileOpen ? (
-              <svg aria-hidden="true" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg aria-hidden="true" style={{ width: 24, height: 24 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             ) : (
-              <svg aria-hidden="true" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg aria-hidden="true" style={{ width: 24, height: 24 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             )}
@@ -98,27 +100,28 @@ export default function Navbar() {
       </div>
 
       <div
-        className={`md:hidden bg-white border-t border-gray-100 px-6 shadow-lg overflow-hidden transition-all duration-300 ease-in-out ${
-          mobileOpen ? "max-h-80 py-4" : "max-h-0"
-        }`}
+        className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${mobileOpen ? "max-h-96 py-4" : "max-h-0"}`}
+        style={{ background: "white", borderTop: "1px solid var(--border)", padding: mobileOpen ? "16px 24px" : "0 24px" }}
       >
         {NAV_LINKS.map(({ label, href }) => (
           <Link
             key={label}
             href={href}
             onClick={() => setMobileOpen(false)}
-            className="block text-sm font-medium text-gray-700 hover:text-black py-1.5"
+            style={{ display: "block", fontSize: "12px", fontWeight: 600, color: "#5a5a56", textDecoration: "none", padding: "8px 0", textTransform: "uppercase", letterSpacing: "0.08em", textAlign: "center" }}
           >
             {label}
           </Link>
         ))}
-        <Link
-          href="/#contact"
+        <a
+          href="https://calendar.app.google/3QEmmNd7hzfVYk6K8"
+          target="_blank"
+          rel="noopener noreferrer"
           onClick={() => setMobileOpen(false)}
-          className="block rounded-md bg-black text-center px-5 py-2.5 text-sm font-semibold text-white mt-3"
+          style={{ display: "block", textAlign: "center", background: "var(--red)", color: "white", padding: "10px 20px", fontSize: "14px", fontWeight: 600, textDecoration: "none", marginTop: "12px" }}
         >
           Get Started
-        </Link>
+        </a>
       </div>
     </header>
   );
