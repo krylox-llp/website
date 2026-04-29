@@ -71,17 +71,15 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <a
-            href="https://calendar.app.google/3QEmmNd7hzfVYk6K8"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/#contact"
             style={{ background: "var(--red)", color: "white", padding: "8px 20px", fontSize: "13px", fontWeight: 600, textDecoration: "none", fontFamily: "var(--font-ibm-plex-sans)", transition: "background .2s" }}
             className="hidden md:inline-flex"
             onMouseOver={e => (e.currentTarget.style.background = "var(--red-hover)")}
             onMouseOut={e => (e.currentTarget.style.background = "var(--red)")}
           >
             Get Started
-          </a>
+          </Link>
 
           <button
             className="md:hidden ml-auto"
@@ -116,15 +114,13 @@ export default function Navbar() {
             {label}
           </Link>
         ))}
-        <a
-          href="https://calendar.app.google/3QEmmNd7hzfVYk6K8"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          href="/#contact"
           onClick={() => setMobileOpen(false)}
           style={{ display: "block", textAlign: "center", background: "var(--red)", color: "white", padding: "10px 20px", fontSize: "14px", fontWeight: 600, textDecoration: "none", marginTop: "12px" }}
         >
           Get Started
-        </a>
+        </Link>
       </div>
     </header>
   );
