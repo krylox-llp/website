@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { label: "Process", href: "/#process" },
   { label: "GPU Hosting", href: "/#hosting" },
   { label: "Blog", href: "/blog" },
+  { label: "MLOps Maturity", href: "/mlops-maturity" },
 ];
 
 export default function Navbar() {
@@ -35,6 +36,7 @@ export default function Navbar() {
 
   const isActive = (href: string) => {
     if (href === "/blog") return pathname.startsWith("/blog");
+    if (href === "/mlops-maturity") return pathname.startsWith("/mlops-maturity");
     if (pathname !== "/") return false;
     return activeSection === href.replace("/#", "");
   };

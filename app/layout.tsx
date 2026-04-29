@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Inter, IBM_Plex_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import CookieBanner from "@/components/CookieBanner";
+import dynamic from "next/dynamic";
 import "./globals.css";
+
+const CookieBanner = dynamic(() => import("@/components/CookieBanner"), { ssr: false });
 
 const inter = Inter({
   subsets: ["latin"],

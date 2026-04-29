@@ -30,11 +30,13 @@ export default function FaqSection() {
                   style={{ width: "100%", background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "24px 0", fontFamily: "var(--font-ibm-plex-sans)", fontSize: "17px", fontWeight: 600, color: "var(--black)", gap: "20px", textAlign: "left" }}
                 >
                   {item.q}
-                  <span style={{ fontSize: "22px", fontWeight: 300, color: "var(--black)", flexShrink: 0, transition: "transform 0.25s", lineHeight: "1", display: "inline-block", transform: isOpen ? "rotate(45deg)" : "none" }}>+</span>
+                  <span style={{ fontSize: "22px", fontWeight: 300, color: "var(--black)", flexShrink: 0, transition: "transform 0.25s", lineHeight: "1", display: "inline-block", transform: isOpen ? "rotate(45deg)" : "rotate(0deg)" }}>+</span>
                 </button>
-                {isOpen && (
-                  <p style={{ fontSize: "15px", color: "#5a5a56", lineHeight: 1.75, padding: "0 0 24px", maxWidth: "700px", margin: 0 }}>{item.a}</p>
-                )}
+                <div className={`faq-body${isOpen ? " open" : ""}`}>
+                  <div>
+                    <p style={{ fontSize: "15px", color: "#5a5a56", lineHeight: 1.75, padding: "0 0 24px", maxWidth: "700px", margin: 0 }}>{item.a}</p>
+                  </div>
+                </div>
               </div>
             );
           })}

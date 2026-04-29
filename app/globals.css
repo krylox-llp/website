@@ -153,6 +153,13 @@
 
 /* ── FAQ ── */
 .faq-item { border-bottom: 1px solid var(--border); }
+.faq-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.25s ease;
+}
+.faq-body.open { grid-template-rows: 1fr; }
+.faq-body > div { overflow: hidden; }
 
 /* ── Tech chips ── */
 .chip {
@@ -295,6 +302,28 @@
 
 @media (max-width: 480px) {
   .rsp-process-grid { grid-template-columns: 1fr; }
+}
+
+@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+/* ── MLOps Maturity page ── */
+.mlops-quiz-inner  { padding: 56px 24px 80px; }
+.mlops-desc-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+.mlops-imp-grid    { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.mlops-breakdown-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.mlops-cta-grid    { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: center; }
+.mlops-result-hero-grid { display: flex; align-items: flex-start; gap: 32px; flex-wrap: wrap; }
+
+@media (max-width: 768px) {
+  .mlops-quiz-inner  { padding: 40px 20px 60px; }
+  .mlops-desc-grid   { grid-template-columns: 1fr; gap: 40px; }
+  .mlops-imp-grid    { grid-template-columns: 1fr; }
+  .mlops-breakdown-grid { grid-template-columns: repeat(2, 1fr); }
+  .mlops-cta-grid    { grid-template-columns: 1fr; gap: 32px; }
+}
+
+@media (max-width: 480px) {
+  .mlops-breakdown-grid { grid-template-columns: 1fr 1fr; }
 }
 
 /* ── Blog prose tables ── */

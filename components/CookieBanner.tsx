@@ -60,7 +60,6 @@ export default function CookieBanner() {
           Accept
         </button>
       </div>
-      <style>{`@keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }`}</style>
     </div>
   );
 }

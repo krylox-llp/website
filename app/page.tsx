@@ -1,10 +1,12 @@
 import type { CSSProperties } from "react";
+import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RevealObserver from "@/components/RevealObserver";
-import ServicesSection from "@/components/ServicesSection";
-import FaqSection from "@/components/FaqSection";
-import ContactForm from "@/components/ContactForm";
+
+const ServicesSection = dynamic(() => import("@/components/ServicesSection"));
+const FaqSection = dynamic(() => import("@/components/FaqSection"));
+const ContactForm = dynamic(() => import("@/components/ContactForm"));
 
 /* ── Data ─────────────────────────────────────────── */
 
