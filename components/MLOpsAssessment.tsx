@@ -635,14 +635,12 @@ function ResultsScreen({
 
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               <a
-                href="https://calendar.app.google/3QEmmNd7hzfVYk6K8"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/#contact"
                 style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "9px", background: "var(--red)", color: "white", padding: "14px 28px", fontWeight: 700, fontSize: "14px", textDecoration: "none", fontFamily: "var(--font-ibm-plex-sans)", whiteSpace: "nowrap", transition: "background 0.2s" }}
                 onMouseOver={e => (e.currentTarget.style.background = "var(--red-hover)")}
                 onMouseOut={e => (e.currentTarget.style.background = "var(--red)")}
               >
-                Book a diagnostic call
+                Work with us
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>

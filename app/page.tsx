@@ -22,7 +22,7 @@ const WHY = [
 const PROCESS = [
   { step: "Phase 01", num: "01", title: "Discovery Audit", desc: "We profile your stack, latency, cost, and pipeline bottlenecks, then tell you exactly what to fix first and what it's worth." },
   { step: "Phase 02", num: "02", title: "Strategy & Roadmap", desc: "A prioritized technical plan: tooling decisions, milestones, and cost-benefit analysis. You know exactly what we're building and why." },
-  { step: "Phase 03", num: "03", title: "Implementation", desc: "We oversee and execute the technical work, optimisation, automation, monitoring setup, working alongside your team or as the lead engineer." },
+  { step: "Phase 03", num: "03", title: "Implementation", desc: "Krylox owns and executes the full technical build — optimisation, automation, monitoring setup. Your team provides context, access, and feedback. We do the engineering." },
   { step: "Phase 04", num: "04", title: "Handover & Support", desc: "Full documentation, team walkthroughs, and runbooks. You own the system completely, with the confidence to run it independently." },
 ];
 
@@ -83,9 +83,9 @@ export default function Home() {
             </p>
 
             <div style={{ display: "flex", alignItems: "center", gap: "14px", flexWrap: "wrap" }}>
-              <a href="https://calendar.app.google/3QEmmNd7hzfVYk6K8" target="_blank" rel="noopener noreferrer"
+              <a href="/mlops-maturity"
                 style={{ display: "inline-flex", alignItems: "center", gap: "9px", background: "var(--red)", color: "white", padding: "14px 28px", fontWeight: 700, fontSize: "14px", textDecoration: "none", fontFamily: "var(--font-ibm-plex-sans)" }}>
-                Book a diagnostic call
+                MLOps assessment
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
               </a>
               <a href="#services"
@@ -257,7 +257,7 @@ export default function Home() {
             <div className="rsp-contact-grid">
               <div>
                 <div className="eyebrow reveal" style={{ color: "rgba(255,255,255,0.35)" }}>Send us a message</div>
-                <h2 className="reveal d1" style={S.h2("white")}>Prefer to write<br />before we talk?</h2>
+                <h2 className="reveal d1" style={S.h2("white")}>Let&apos;s talk.</h2>
                 <p className="reveal d2" style={{ ...S.lead("rgba(255,255,255,0.45)"), marginTop: "16px" }}>Share your stack, pain points, and goals. We&apos;ll reply within 24 hours.</p>
                 <div className="reveal d3" style={{ display: "flex", flexDirection: "column", gap: "28px", marginTop: "40px" }}>
                   {[{ label: "Email", value: "hello@krylox.ai" }, { label: "Availability", value: "EMEA · UAE · India · US" }, { label: "Response time", value: "Within 24 hours" }].map(item => (
