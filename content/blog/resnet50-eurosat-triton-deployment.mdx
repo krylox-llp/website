@@ -16,7 +16,6 @@ Serving a trained model in production is a different beast from training it. You
 
 **NVIDIA Triton** is a production-grade inference server that supports multiple backends (PyTorch, TensorFlow, ONNX Runtime, TensorRT, and more), dynamic batching, concurrent model execution, and both HTTP and gRPC endpoints out of the box.
 
-The deployment pipeline:
 
 ```
 HuggingFace ResNet50 (EuroSAT) → ONNX Export → Triton Model Repository → Triton Server → HTTP/gRPC Inference
@@ -66,10 +65,6 @@ The `-v ${PWD}:/workspace` flag mounts your current directory into the container
 pip install timm accelerate
 pip install "optimum-onnx[onnxruntime]"
 ```
-
-- `timm` provides the ResNet50 architecture used by many HuggingFace vision models
-- `accelerate` handles device placement
-- `optimum-onnx` is Hugging Face's official ONNX export toolkit
 
 ### 2c. Export to ONNX
 
@@ -159,12 +154,6 @@ output [
 ]
 ```
 
-A few things worth noting:
-
-- **`backend: "onnxruntime"`**: tells Triton to use the ONNX Runtime backend, which runs `.onnx` files on CPU or GPU automatically.
-- **`max_batch_size: 0`**: disables Triton's built-in dynamic batching and lets the model control its own batch dimension. The `-1` in `dims` means the batch axis is dynamic and handled inside the model itself. If you want Triton to batch requests for you, set `max_batch_size` to a positive integer and remove the leading `-1` from dims.
-- The **tensor names** (`pixel_values`, `logits`) must exactly match what the ONNX graph reports; this is why the inspection step above matters.
-
 Your final directory structure should look like this:
 
 ```
@@ -198,7 +187,7 @@ Port mapping:
 |------|----------|-----|
 | 8000 | HTTP | REST inference + management |
 | 8001 | gRPC | gRPC inference |
-| 8002 | HTTP | Prometheus metrics |
+| 8002 | HTTP | metrics |
 
 When the server starts successfully, you'll see:
 
@@ -256,17 +245,6 @@ EUROSAT_CLASSES = [
 predicted_class = EUROSAT_CLASSES[logits.argmax()]
 print(f"Predicted: {predicted_class}")
 ```
-
----
-
-## What's Next
-
-This gets you a working single-model Triton deployment. From here, a few natural extensions:
-
-- **TensorRT optimization**: convert the ONNX model to a TensorRT engine for significantly lower latency on NVIDIA GPUs. Triton has a TensorRT backend and you can use `trtexec` to do the conversion.
-- **Dynamic batching**: set `max_batch_size` in the config and enable `dynamic_batching {}` to let Triton coalesce concurrent requests, improving GPU utilization under load.
-- **Model ensembles**: if you want to chain preprocessing, inference, and postprocessing as separate Triton models, use Triton's ensemble scheduler.
-- **Kubernetes deployment**: Triton has a Helm chart (`triton-inference-server`) that works well with NVIDIA GPU Operator for cloud or on-prem Kubernetes clusters.
 
 ---
 
