@@ -114,7 +114,7 @@ export default function PostPage({ params }: Props) {
               Back to Blog
             </Link>
             <a
-              href="https://calendar.app.google/18Sxyox2jD5kK9YQA"
+              href="https://cal.com/jagadeesh-jaganathan-rqsxg9/30min"
               className="bg-black px-5 py-2.5 text-sm font-semibold text-white hover:bg-red-600 transition-colors"
             >
               Work with us

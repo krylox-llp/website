@@ -109,7 +109,7 @@ export default function BlogPage() {
               We do this for production systems every day. Let us audit yours.
             </p>
             <a
-              href="https://calendar.app.google/3QEmmNd7hzfVYk6K8"
+              href="https://cal.com/jagadeesh-jaganathan-rqsxg9/30min"
               className="mt-8 inline-flex bg-red-600 px-8 py-3.5 text-sm font-semibold text-white hover:bg-red-500 transition-colors"
             >
               Schedule a call
