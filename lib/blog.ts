@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
+export { formatDate } from "./format";
 
 const CONTENT_DIR = path.join(process.cwd(), "content/blog");
 
@@ -11,6 +12,7 @@ export type PostMeta = {
   description: string;
   readTime: string;
   tags: string[];
+  category: string;
 };
 
 export type Post = PostMeta & {
@@ -33,6 +35,7 @@ export function getAllPosts(): PostMeta[] {
         description: data.description ?? "",
         readTime: data.readTime ?? "5 min read",
         tags: data.tags ?? [],
+        category: data.category ?? "Insights",
       };
     })
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -50,14 +53,8 @@ export function getPost(slug: string): Post | null {
     description: data.description ?? "",
     readTime: data.readTime ?? "5 min read",
     tags: data.tags ?? [],
+    category: data.category ?? "Insights",
     content,
   };
 }
 
-export function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-}

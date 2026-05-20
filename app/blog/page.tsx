@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { getAllPosts, formatDate } from "@/lib/blog";
+import BlogFilter from "@/components/BlogFilter";
+import { getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 
 export default function BlogPage() {
   const posts = getAllPosts();
+  const categories = Array.from(new Set(posts.map((p) => p.category))).sort();
 
   return (
     <>
@@ -43,58 +44,13 @@ export default function BlogPage() {
           </div>
         </section>
 
-        {/* Posts grid */}
+        {/* Posts grid with filter */}
         <section className="bg-gray-50 py-20">
           <div className="mx-auto max-w-7xl px-6 lg:px-8">
             {posts.length === 0 ? (
               <p className="text-gray-500 text-center py-16">No posts yet. Check back soon.</p>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {posts.map((post) => (
-                  <Link
-                    key={post.slug}
-                    href={`/blog/${post.slug}`}
-                    className="group bg-white p-8 border border-gray-200 hover:border-red-200 hover:shadow-lg transition-all duration-300 flex flex-col"
-                  >
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mb-5">
-                      {post.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="text-xs font-medium text-red-600 bg-red-50 px-3 py-1"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Title */}
-                    <h2 className="text-xl font-bold text-black group-hover:text-red-600 transition-colors leading-snug mb-3">
-                      {post.title}
-                    </h2>
-
-                    {/* Description */}
-                    <p className="text-gray-500 text-sm leading-relaxed flex-1">
-                      {post.description}
-                    </p>
-
-                    {/* Meta */}
-                    <div className="mt-6 pt-5 border-t border-gray-100 flex items-center justify-between">
-                      <div className="flex items-center gap-3 text-xs text-gray-400">
-                        <span>{formatDate(post.date)}</span>
-                        <span>&middot;</span>
-                        <span>{post.readTime}</span>
-                      </div>
-                      <span className="text-sm font-semibold text-red-600 group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
-                        Read
-                        <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              <BlogFilter posts={posts} categories={categories} />
             )}
           </div>
         </section>
