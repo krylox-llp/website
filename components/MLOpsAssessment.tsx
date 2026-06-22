@@ -220,23 +220,37 @@ const LEVELS = [
   },
 ];
 
+/* ── Helpers ─────────────────────────────────────────── */
+
+function shuffleArray<T>(arr: T[]): T[] {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
 /* ── Main export ─────────────────────────────────────── */
 
 export default function MLOpsAssessment() {
-  const [screen, setScreen] = useState<"intro" | "quiz" | "results">("intro");
+  const [screen, setScreen] = useState<"intro" | "quiz" | "email" | "results">("intro");
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [selected, setSelected] = useState<number | null>(null);
+  const [shuffledQuestions] = useState(() =>
+    QUESTIONS.map(q => ({ ...q, options: shuffleArray(q.options) }))
+  );
 
   function handleNext() {
     if (selected === null) return;
-    const newAnswers = { ...answers, [QUESTIONS[currentQ].id]: selected };
+    const newAnswers = { ...answers, [shuffledQuestions[currentQ].id]: selected };
     setAnswers(newAnswers);
     setSelected(null);
-    if (currentQ < QUESTIONS.length - 1) {
+    if (currentQ < shuffledQuestions.length - 1) {
       setCurrentQ(currentQ + 1);
     } else {
-      setScreen("results");
+      setScreen("email");
     }
   }
 
@@ -246,7 +260,7 @@ export default function MLOpsAssessment() {
       setAnswers({});
       setSelected(null);
     } else {
-      const prev = QUESTIONS[currentQ - 1];
+      const prev = shuffledQuestions[currentQ - 1];
       setSelected(answers[prev.id] ?? null);
       setCurrentQ(currentQ - 1);
     }
@@ -269,16 +283,145 @@ export default function MLOpsAssessment() {
   if (screen === "quiz")
     return (
       <QuizScreen
-        question={QUESTIONS[currentQ]}
+        question={shuffledQuestions[currentQ]}
         questionIndex={currentQ}
-        totalQuestions={QUESTIONS.length}
+        totalQuestions={shuffledQuestions.length}
         selected={selected}
         onSelect={setSelected}
         onNext={handleNext}
         onBack={handleBack}
       />
     );
+  if (screen === "email") {
+    const level = computeLevel();
+    return (
+      <EmailGateScreen
+        level={level}
+        levelName={LEVELS[level].name}
+        answers={answers}
+        onUnlock={() => setScreen("results")}
+      />
+    );
+  }
   return <ResultsScreen levelData={LEVELS[computeLevel()]} answers={answers} onRestart={handleRestart} />;
+}
+
+/* ── Email gate screen ───────────────────────────────── */
+
+function EmailGateScreen({
+  level,
+  levelName,
+  answers,
+  onUnlock,
+}: {
+  level: number;
+  levelName: string;
+  answers: Record<string, number>;
+  onUnlock: () => void;
+}) {
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSubmitting(true);
+    setError(false);
+    const fd = new FormData(e.currentTarget);
+    await fetch("/api/assessment-lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: fd.get("name"),
+        email: fd.get("email"),
+        company: fd.get("company"),
+        level,
+        levelName,
+        scores: answers,
+      }),
+    }).catch(() => null);
+    setSubmitting(false);
+    onUnlock();
+  }
+
+  const levelData = LEVELS[level];
+
+  return (
+    <div style={{ minHeight: "calc(100vh - 64px)", background: "var(--black)", display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", overflow: "hidden" }}>
+      <div className="hero-grid-bg" style={{ position: "absolute", inset: 0, pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: "-200px", right: "-100px", width: "600px", height: "600px", borderRadius: "50%", background: "radial-gradient(circle, rgba(212,43,32,0.07) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+      <div style={{ maxWidth: "520px", margin: "0 auto", width: "100%", padding: "80px 32px", position: "relative", zIndex: 2 }}>
+        {/* Score teaser */}
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", marginBottom: "40px", padding: "20px 24px", background: "rgba(255,255,255,0.04)", border: "1.5px solid rgba(255,255,255,0.08)" }}>
+          <div style={{ width: "52px", height: "52px", borderRadius: "50%", background: levelData.color, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+            <span style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: "24px", fontWeight: 700, color: "white" }}>{level}</span>
+          </div>
+          <div>
+            <div style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", color: levelData.color, marginBottom: "4px" }}>Your result is ready</div>
+            <div style={{ fontSize: "15px", fontWeight: 700, color: "white" }}>Level {level} — {levelName}</div>
+          </div>
+        </div>
+
+        <h2 style={{ fontSize: "clamp(26px, 4vw, 36px)", color: "white", marginBottom: "12px", letterSpacing: "-0.03em", lineHeight: 1.1 }}>
+          Where should we send your roadmap?
+        </h2>
+        <p style={{ fontSize: "15px", color: "rgba(255,255,255,0.45)", marginBottom: "36px", lineHeight: 1.7 }}>
+          Enter your work email to unlock your full assessment — strengths, improvement roadmap, and a score breakdown across all 8 dimensions.
+        </p>
+
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+          {[
+            { label: "Your name", name: "name", type: "text", placeholder: "Ada Lovelace", required: true },
+            { label: "Work email", name: "email", type: "email", placeholder: "ada@company.ai", required: true },
+            { label: "Company", name: "company", type: "text", placeholder: "Your company", required: false },
+          ].map(f => (
+            <div key={f.name} style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <label style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.35)" }}>
+                {f.label}{!f.required && <span style={{ color: "rgba(255,255,255,0.2)", marginLeft: "6px", textTransform: "none", letterSpacing: 0 }}>optional</span>}
+              </label>
+              <input
+                name={f.name}
+                type={f.type}
+                placeholder={f.placeholder}
+                required={f.required}
+                style={{ background: "rgba(255,255,255,0.06)", border: "1.5px solid rgba(255,255,255,0.12)", padding: "12px 14px", color: "white", fontSize: "14px", fontFamily: "inherit", outline: "none", width: "100%", transition: "border-color .2s", boxSizing: "border-box" }}
+                onFocus={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.35)")}
+                onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)")}
+              />
+            </div>
+          ))}
+
+          {error && (
+            <p style={{ fontSize: "13px", color: "#f87171", margin: 0 }}>
+              Something went wrong. Please try again.
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={submitting}
+            style={{ marginTop: "8px", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: "10px", background: "var(--red)", color: "white", padding: "15px 28px", fontWeight: 700, fontSize: "14px", border: "none", cursor: submitting ? "default" : "pointer", fontFamily: "var(--font-ibm-plex-sans)", transition: "background 0.2s", opacity: submitting ? 0.7 : 1 }}
+            onMouseOver={e => { if (!submitting) e.currentTarget.style.background = "var(--red-hover)"; }}
+            onMouseOut={e => { if (!submitting) e.currentTarget.style.background = "var(--red)"; }}
+          >
+            {submitting ? "Unlocking…" : (
+              <>
+                Unlock My Results
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </>
+            )}
+          </button>
+
+          <p style={{ fontSize: "12px", color: "rgba(255,255,255,0.25)", margin: "4px 0 0", lineHeight: 1.6 }}>
+            No spam. We use this to send you your results and may follow up with relevant MLOps resources. See our{" "}
+            <a href="/privacy" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "underline" }}>privacy policy</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+  );
 }
 
 /* ── Intro screen ────────────────────────────────────── */
