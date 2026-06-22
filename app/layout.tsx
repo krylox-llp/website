@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import "./globals.css";
 
 const CookieBanner = dynamic(() => import("@/components/CookieBanner"), { ssr: false });
+const ApolloTracker = dynamic(() => import("@/components/ApolloTracker"), { ssr: false });
 
 const inter = Inter({
   subsets: ["latin"],
@@ -198,6 +199,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CookieBanner />
         <Analytics />
         <SpeedInsights />
+        <ApolloTracker />
       </body>
     </html>
   );

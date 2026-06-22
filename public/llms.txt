@@ -15,6 +15,10 @@ Krylox is an engineering-led consultancy specializing in MLOps and AI inference 
 
 Serving clients across EMEA, UAE, India, and the United States.
 
+## Tools
+
+- **MLOps Maturity Assessment**: A free 8-question self-assessment based on the Microsoft MLOps Maturity Model. Get a maturity score and a concrete roadmap. https://krylox.ai/mlops-maturity
+
 ## Contact
 
 - Website: https://krylox.ai
@@ -26,3 +30,4 @@ Serving clients across EMEA, UAE, India, and the United States.
 
 - https://krylox.ai/blog/llm-cold-start-optimization
 - https://krylox.ai/blog/why-llm-inference-infra-is-hard
+- https://krylox.ai/blog/resnet50-eurosat-triton-deployment
