@@ -16,7 +16,7 @@ export default function PrivacyPage() {
         <section className="bg-white pt-32 pb-16 border-b border-gray-100">
           <div className="mx-auto max-w-3xl px-6 lg:px-8">
             <h1 className="text-3xl md:text-4xl font-extrabold text-black tracking-tight">Privacy Policy</h1>
-            <p className="mt-3 text-sm text-gray-400">Last updated: April 2026</p>
+            <p className="mt-3 text-sm text-gray-400">Last updated: July 2026</p>
           </div>
         </section>
 
@@ -62,6 +62,8 @@ export default function PrivacyPage() {
             </p>
             <ul>
               <li><strong>Resend Inc.</strong> (USA), email delivery. Processes your name and email address solely to transmit our reply.</li>
+              <li><strong>Vercel Inc.</strong> (USA), website hosting, analytics, and performance monitoring. Processes your IP address, browser type, and pages viewed to serve this site and produce aggregate traffic and performance statistics.</li>
+              <li><strong>Apollo Data Company, Inc.</strong> (USA), website visitor identification. Only where you have consented, processes your IP address, pages viewed, and any identifier associated with prior email correspondence, in order to identify the organisation you are visiting from for our business development purposes.</li>
             </ul>
             <p>
               We remain responsible for compliance with the DPDPA in respect of all processing
@@ -149,15 +151,29 @@ export default function PrivacyPage() {
 
             <h2>12. Cookies</h2>
             <p>
-              This site uses only one functional cookie: a <code>cookie_consent</code> value stored
-              in your browser&apos;s local storage to remember your preference. No analytics, advertising,
-              or cross-site tracking cookies are set. We do not use Google Analytics or any other
-              third-party tracking service.
+              We store one functional preference: a <code>cookie_consent</code> value in your
+              browser&apos;s local storage, recording whether you accepted or declined non-essential
+              tracking. It is stored whichever choice you make, and is necessary for the site to
+              honour it.
+            </p>
+            <p>
+              If you accept, we load the Apollo website tracker, a third-party service that
+              identifies the organisation associated with your IP address and records the pages you
+              view, so that our team can follow up with interested organisations. If you decline,
+              this script is never loaded. You can change your decision at any time by clearing this
+              site&apos;s local storage in your browser.
+            </p>
+            <p>
+              We also use Vercel Web Analytics and Vercel Speed Insights, which collect aggregate
+              page view and performance data without setting cookies. We do not use Google Analytics
+              or any advertising network.
             </p>
 
             <h2>13. Cross-border data transfers</h2>
             <p>
-              Your data may be processed by our Data Processors outside India (see §5 above). Such
+              Your data may be processed by our Data Processors outside India (see §5 above).
+              Resend Inc., Vercel Inc., and Apollo Data Company, Inc. are all located in the United
+              States, and data processed by them is transferred outside India accordingly. Such
               transfers are subject to any restrictions notified by the Central Government under
               §16 of the DPDPA. We ensure that processors outside India are bound by contractual
               obligations equivalent to those required under the DPDPA.

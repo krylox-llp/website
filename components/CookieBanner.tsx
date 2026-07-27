@@ -2,21 +2,22 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { CONSENT_KEY, setConsent } from "@/lib/consent";
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem("cookie_consent")) setVisible(true);
+    if (!localStorage.getItem(CONSENT_KEY)) setVisible(true);
   }, []);
 
   function accept() {
-    localStorage.setItem("cookie_consent", "accepted");
+    setConsent("accepted");
     setVisible(false);
   }
 
   function decline() {
-    localStorage.setItem("cookie_consent", "declined");
+    setConsent("declined");
     setVisible(false);
   }
 
@@ -31,7 +32,9 @@ export default function CookieBanner() {
       animation: "slideUp 0.3s ease",
     }}>
       <p style={{ fontSize: "13px", color: "rgba(255,255,255,0.55)", margin: 0, maxWidth: "640px", lineHeight: 1.6 }}>
-        We use essential cookies only, no tracking or advertising.{" "}
+        We store one functional preference to remember this choice. If you accept, we also load
+        Apollo, a third-party service that identifies visiting organisations for our sales
+        outreach. Decline and it is never loaded.{" "}
         <Link href="/privacy" style={{ color: "rgba(255,255,255,0.8)", textDecoration: "underline" }}>
           Privacy Policy
         </Link>
