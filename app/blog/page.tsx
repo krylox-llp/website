@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import BlogFilter from "@/components/BlogFilter";
+import JsonLd from "@/components/JsonLd";
+import { blogListingSchema } from "@/lib/schema";
 import { getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
@@ -23,6 +25,7 @@ export default function BlogPage() {
 
   return (
     <>
+      <JsonLd data={blogListingSchema(posts)} />
       <Navbar />
       <main>
         {/* Hero */}

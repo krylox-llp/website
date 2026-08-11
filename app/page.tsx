@@ -3,6 +3,8 @@ import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RevealObserver from "@/components/RevealObserver";
+import JsonLd from "@/components/JsonLd";
+import { HOME_SCHEMA } from "@/lib/schema";
 
 const ServicesSection = dynamic(() => import("@/components/ServicesSection"));
 const FaqSection = dynamic(() => import("@/components/FaqSection"));
@@ -59,6 +61,7 @@ const S = {
 export default function Home() {
   return (
     <>
+      <JsonLd data={HOME_SCHEMA} />
       <Navbar />
       <RevealObserver />
       <main>

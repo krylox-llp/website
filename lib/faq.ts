@@ -1,0 +1,7 @@
+export const FAQ_ITEMS = [
+  { q: "What exactly does Krylox do?", a: "Krylox LLP is a specialist MLOps and AI inference optimization engineering firm. We help technical startups and enterprises ship ML models that are fast, cost-efficient, and reliable in production, handling everything from pipeline design to live drift monitoring. We also host models on our own GPU fleet." },
+  { q: "Will we have to change our cloud provider or ML framework?", a: "No. We operate on BYOC (Bring Your Own Cloud) and BYOM (Bring Your Own Model) principles. We deploy within your existing AWS, GCP, or Azure environment and optimize whatever framework you're running, PyTorch, TensorFlow, JAX, or fine-tuned LLMs." },
+  { q: "How long does a typical engagement take?", a: "A discovery audit takes approximately 2 weeks and delivers a full optimization roadmap. A full implementation, pipeline build, inference optimization, monitoring setup, typically runs 4 to 6 weeks. Embedded engineering engagements are flexible and ongoing." },
+  { q: "Will we own everything after the project ends?", a: "Yes, completely. Every system we build uses open standards with no proprietary dependencies. You receive full source code, documentation, runbooks, and team walkthroughs. We measure success by how little you need us after we leave." },
+  { q: "Where are you based and what regions do you serve?", a: "Krylox operates globally with active clients across EMEA, UAE, India, and the United States. We work across time zones without friction." },
+];

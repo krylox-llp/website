@@ -5,6 +5,8 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
+import { blogPostSchema } from "@/lib/schema";
 import { getAllPosts, getPost, formatDate } from "@/lib/blog";
 
 type Props = { params: { slug: string } };
@@ -42,6 +44,7 @@ export default function PostPage({ params }: Props) {
 
   return (
     <>
+      <JsonLd data={blogPostSchema({ ...post, wordCount: post.content.trim().split(/\s+/).length })} />
       <Navbar />
       <main>
         {/* Post header */}

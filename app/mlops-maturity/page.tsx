@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MLOpsAssessment from "@/components/MLOpsAssessment";
+import JsonLd from "@/components/JsonLd";
+import { ASSESSMENT_SCHEMA } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "MLOps Maturity Assessment",
@@ -19,6 +21,7 @@ export const metadata: Metadata = {
 export default function MLOpsMaturityPage() {
   return (
     <>
+      <JsonLd data={ASSESSMENT_SCHEMA} />
       <Navbar />
       <main style={{ paddingTop: "64px" }}>
         <MLOpsAssessment />
