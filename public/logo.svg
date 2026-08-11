@@ -1,3 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg width="25mm" height="25mm" version="1.1" viewBox="0 0 25 25" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><g transform="translate(-573.13 -44.501)"><g transform="translate(488.46 44.501)"><g transform="translate(54.463 -68.593)"><g transform="translate(18.31 -.059261)"><g transform="translate(-30.987 4.1278)"><g transform="translate(-26.129 54.747)" fill="none"><rect x="69.009" y="9.7779" width="25" height="25" fill="none" stroke-width="2.2314"/></g><g transform="translate(.87147 2.2617)" stroke-width="1.684"><text x="42.628078" y="83.678307" fill="#000000" font-family="'Darker Grotesque'" font-size="25.4px" xml:space="preserve"><tspan x="42.628078" y="83.678307" font-weight="bold" stroke-width="1.684"><tspan font-family="Poppins">K</tspan><tspan fill="#ff0000"/></tspan></text><circle cx="62.814" cy="81.678" r="2" fill="#f00"/></g></g></g></g></g></g></svg>
+<svg version="1.2" baseProfile="tiny-ps" width="100%" height="100%" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+  <title>Krylox</title>
+  <path d="M 3 4 H 7.2 V 11.2 L 13.8 4 H 18.8 L 10.8 12.2 L 19 21 H 14 L 8.2 14.2 V 21 H 3 Z" fill="#000000"/>
+  <circle cx="20.8" cy="19.4" r="2" fill="#ff0000"/>
+</svg>
