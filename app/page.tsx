@@ -14,11 +14,10 @@ const ContactForm = dynamic(() => import("@/components/ContactForm"));
 
 const WHY = [
   { num: "01", title: "Rare specialization", desc: "MLOps and inference optimization is a narrow, technically demanding domain. Most agencies don't go near it." },
-  { num: "02", title: "Big tech pedigree", desc: "Google, Meta, Bloomberg. We've shipped ML infrastructure at scale. Same standards, smaller team, more attention." },
-  { num: "03", title: "Your cloud. Your model.", desc: "BYOC and BYOM, we deploy within your AWS, GCP, or Azure environment, or host on our own GPU fleet. We optimize whatever framework you're running. No migration required." },
-  { num: "04", title: "Zero vendor lock-in", desc: "Every system we build uses open standards. No proprietary wrappers, no mandatory subscriptions, no dependencies that require us to stay involved. You own the code and the pipeline." },
-  { num: "05", title: "Results, measured", desc: "Every engagement begins with a baseline and ends with measured results. Up to 10× inference improvement and up to 60% cost reduction, grounded in benchmarks and our team's production experience." },
-  { num: "06", title: "Full ownership transfer", desc: "Every engagement ends with complete documentation, team walkthroughs, and runbooks. We measure success by how little you need us after we leave." },
+  { num: "02", title: "Your cloud. Your model.", desc: "BYOC and BYOM, we deploy within your AWS, GCP, or Azure environment, or host on our own GPU fleet. We optimize whatever framework you're running. No migration required." },
+  { num: "03", title: "Zero vendor lock-in", desc: "Every system we build uses open standards. No proprietary wrappers, no mandatory subscriptions, no dependencies that require us to stay involved. You own the code and the pipeline." },
+  { num: "04", title: "Results, measured", desc: "Every engagement begins with a baseline and ends with measured results. Up to 10× inference improvement and up to 60% cost reduction, grounded in benchmarks and our team's production experience." },
+  { num: "05", title: "Full ownership transfer", desc: "Every engagement ends with complete documentation, team walkthroughs, and runbooks. We measure success by how little you need us after we leave." },
 ];
 
 const PROCESS = [
@@ -96,15 +95,6 @@ export default function Home() {
                 See what we do
               </a>
             </div>
-
-            <div style={{ marginTop: "72px", paddingTop: "48px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", alignItems: "center", gap: "40px", flexWrap: "wrap" }}>
-              <span style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.12em", color: "rgba(255,255,255,0.25)", whiteSpace: "nowrap" }}>Team experience from</span>
-              <div style={{ display: "flex", alignItems: "center", gap: "40px", flexWrap: "wrap" }}>
-                {["Google", "Meta", "Bloomberg"].map(n => (
-                  <span key={n} style={{ fontFamily: "var(--font-ibm-plex-sans)", fontWeight: 700, fontSize: "15px", color: "rgba(255,255,255,0.2)", letterSpacing: "-0.01em" }}>{n}</span>
-                ))}
-              </div>
-            </div>
           </div>
         </section>
 
@@ -114,7 +104,7 @@ export default function Home() {
             {[
               { num: "10", sup: "×", label: "Faster Inference" },
               { num: "60", sup: "%", label: "Cost Reduction" },
-              { num: "3", sup: null, label: "Big Tech Practitioners" },
+              { num: "4", sup: null, label: "Regions Served" },
               { num: "24", sup: "/7", label: "Pipeline Monitoring" },
             ].map(({ num, sup, label }, i) => (
               <div key={label} className={`reveal${i > 0 ? ` d${i}` : ""}`} style={{ padding: "36px 0", borderRight: i < 3 ? "1px solid var(--border)" : "none", textAlign: "center" }}>
@@ -139,7 +129,7 @@ export default function Home() {
               </div>
               <h2 style={{ fontSize: "clamp(36px, 4vw, 58px)", color: "white", marginBottom: "20px" }}>Most production failures<br />aren&apos;t technical.</h2>
               <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.45)", lineHeight: 1.7, marginBottom: "16px" }}>Zillow lost $500M, not because of bad code, but because a market moved while the model stood still. The gap between research and reliable production is a strategy problem, not a syntax problem.</p>
-              <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.45)", lineHeight: 1.7 }}>Krylox closes that gap. The same practices that run ML at Google and Meta, applied to your stack.</p>
+              <p style={{ fontSize: "17px", color: "rgba(255,255,255,0.45)", lineHeight: 1.7 }}>Krylox closes that gap. Rigorous engineering discipline, applied to your stack.</p>
             </div>
             <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", padding: "36px" }}>
               <div style={{ fontFamily: "var(--font-ibm-plex-sans)", fontSize: "20px", fontWeight: 600, color: "white", lineHeight: 1.4, marginBottom: "20px", letterSpacing: "-0.02em" }}>&ldquo;It works on my machine&rdquo; is a strategy failure waiting to happen.</div>

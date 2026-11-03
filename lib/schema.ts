@@ -28,7 +28,7 @@ export const SITE_SCHEMA = {
       },
       image: { "@id": LOGO_ID },
       description:
-        "Krylox LLP is a specialist MLOps and AI inference optimization engineering firm. We work on MLOps strategy and inference architecture, and host models on our own GPU fleet, so clients pay only for what they use. Team experience from Google, Meta, and Bloomberg.",
+        "Krylox LLP is a specialist MLOps and AI inference optimization engineering firm. We work on MLOps strategy and inference architecture, and host models on our own GPU fleet, so clients pay only for what they use.",
       email: "hello@krylox.ai",
       sameAs: [
         "https://www.linkedin.com/company/krylox",
@@ -80,7 +80,7 @@ export const HOME_SCHEMA = {
       about: { "@id": ORG_ID },
       primaryImageOfPage: { "@id": LOGO_ID },
       description:
-        "Krylox LLP advises on MLOps strategy and inference architecture, and hosts models on our own GPU fleet. Up to 10× faster inference, up to 60% cost reduction. Team from Google, Meta, Bloomberg.",
+        "Krylox LLP advises on MLOps strategy and inference architecture, and hosts models on our own GPU fleet. Up to 10× faster inference, up to 60% cost reduction.",
       datePublished: "2025-01-01",
       dateModified: "2026-04-20",
       inLanguage: "en",

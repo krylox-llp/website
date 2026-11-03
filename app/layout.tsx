@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | Krylox",
   },
   description:
-    "Krylox LLP advises on MLOps strategy and inference architecture, and hosts models on our own GPU fleet. Team from Google, Meta, and Bloomberg. Serving EMEA, UAE, India, and the US.",
+    "Krylox LLP advises on MLOps strategy and inference architecture, and hosts models on our own GPU fleet. Serving EMEA, UAE, India, and the US.",
   keywords: [
     "MLOps engineering firm",
     "AI inference optimization",
@@ -72,13 +72,13 @@ export const metadata: Metadata = {
     siteName: "Krylox",
     title: "Krylox | MLOps & AI Inference Optimization Services",
     description:
-      "Production AI, done properly. Up to 10× faster inference, up to 60% cost reduction. Managed GPU hosting available. Team from Google, Meta, Bloomberg.",
+      "Production AI, done properly. Up to 10× faster inference, up to 60% cost reduction. Managed GPU hosting available.",
   },
   twitter: {
     card: "summary_large_image",
     title: "Krylox | MLOps & AI Inference Optimization Services",
     description:
-      "Production AI, done properly. Up to 10× faster inference, up to 60% cost reduction. Team from Google, Meta, Bloomberg.",
+      "Production AI, done properly. Up to 10× faster inference, up to 60% cost reduction.",
   },
   icons: { icon: "/favicon.png", apple: "/favicon.png" },
   category: "technology",
