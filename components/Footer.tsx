@@ -25,7 +25,7 @@ export default function Footer() {
             onMouseOut={e => (e.currentTarget.style.color = "#9a9a96")}>
             Terms
           </a>
-          <a href="https://www.linkedin.com/company/krylox-hq" target="_blank" rel="noopener noreferrer"
+          <a href="https://www.linkedin.com/company/krylox" target="_blank" rel="noopener noreferrer"
             style={{ fontSize: "12.5px", color: "#9a9a96", textDecoration: "none", transition: "color .2s" }}
             onMouseOver={e => (e.currentTarget.style.color = "var(--black)")}
             onMouseOut={e => (e.currentTarget.style.color = "#9a9a96")}>
